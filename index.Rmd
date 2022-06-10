@@ -1,5 +1,5 @@
 ---
-title: "Michael Komnick"
+title: "Home"
 ---
 
 ## Welcome to the homepage of Michael Komnick
