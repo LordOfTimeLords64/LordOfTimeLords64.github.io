@@ -1,0 +1,239 @@
+---
+title: "Data About Baby Names"
+author: "Michael Komnick"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(babynames)
+library(ggthemes)
+library(knitr)
+library(pander)
+```
+
+## Getting to know `babynames`
+
+Here are the names of the columns: `r pander(names(babynames))` and the first few rows:
+
+```{r}
+kable(head(babynames))
+```
+
+## Let's count and plot some stuff
+
+## By the numbers
+
+Counts of the numbers of males and females born (and registered) in 1880:
+
+```{r}
+
+# Number of names for each sex
+babynames %>%
+  filter(year == 1880) %>%
+  group_by(sex) %>%
+  tally() %>% 
+  kable()
+```
+
+Counts the number of names for each sex by year:
+
+```{r}
+# Number of names for each sex by year
+df <- babynames %>% 
+  group_by(sex, year) %>% 
+  tally()
+kable(head(df))
+```
+
+### Plots:
+
+```{r namesOverTime, fig.cap="A caption", out.width="75%"}
+# Same thing as above
+ggplot() +
+  geom_line(data = df, aes(x = year, y = n, color = sex)) +
+  labs(title = 'Unique names over time',
+       subtitle = 'By sex',
+       caption = 'DataLab 2022')
+```
+
+## The rest of our script:
+
+```{r}
+# Facet wrapping creates one plot for male and one for female
+ggplot(data = df, aes(x = year, y = n)) +
+  geom_line() +
+  facet_wrap(~sex, ncol = 1) +
+  labs(x = 'Year', y = 'Number of Names', title = 'Unique Names Over Time',
+       subtitle = 'By Sex',
+       caption = 'DataLab 2022')
+# ~ means by, so facet by sex
+# ncol means number of columns
+
+# I don't like the 'prop' column, so let's get rid of it:
+babynames <- babynames %>% 
+  select(year, name, n, sex)
+head(babynames)
+
+# How to get total number of babies of each sex for each year
+babies_per_year <- babynames %>% 
+  group_by(year, sex) %>% 
+  summarize(Babies = sum(n)) # Or tally(n)
+head(babies_per_year)
+
+# One graph for babies per year by sex
+ggplot(data = babies_per_year, aes(x = year, y = Babies, color = sex)) +
+  geom_line() +
+  labs(x = 'Year', y = 'Babies Produced', title = 'Baby Production Per Year',
+       subtitle = 'By Sex',
+       caption = 'DataLab 2022')
+
+# Two graphs for babies per year by sex
+ggplot(data = babies_per_year, aes(x = year, y = Babies)) +
+  geom_line() +
+  facet_wrap(~sex, ncol = 1) +
+  labs(x = 'Year', y = 'Babies Produced', title = 'Baby Production Per Year',
+       subtitle = 'By Sex',
+       caption = 'DataLab 2022')
+
+# Find total number of babies per year regardless of sex
+babynames %>% 
+  group_by(year, sex) %>% 
+  summarize(Babies = sum(n)) %>% 
+  summarize(Total_Babies_Per_Year = sum(Babies))
+# Order of year, sex matters
+# Second summarize goes up a level and ungroups the sex?
+
+# Find total number of babies since 1880
+babynames %>% 
+  group_by(year, sex) %>% 
+  summarize(Babies = sum(n)) %>% 
+  summarize(Total_Babies_Per_Year = sum(Babies)) %>% 
+  summarise(Total_Babies_Since_1880 = sum(Total_Babies_Per_Year))
+
+# Pick a name and sex, filter by them, and plot them over time
+# Tex male
+tex <- babynames %>% 
+  filter(sex == 'M', name == 'Tex')
+
+ggplot(data = tex, aes(x = year, y = n)) +
+  geom_line() +
+  labs(x = 'Year', y = 'Number of Babies Named Tex', title = 'Number of Male Babies Named Tex',
+       subtitle = 'By Year',
+       caption = 'DataLab 2022')
+
+# Most popular name from your birth year (2002)
+babynames %>% 
+  filter(year == 2002) %>% 
+  arrange(desc(n))
+
+# Most popular baby names from the 50's
+babynames %>% 
+  filter(year > 1950 & year < 1960) %>% 
+  group_by(sex, name) %>% 
+  summarize(total = sum(n)) %>% 
+  arrange(desc(total))
+
+# Occurances of the three most popular female names from the 50's
+boomers <- babynames %>% 
+  filter(name == 'Mary' | name == 'Linda' | name == 'Patricia', sex == 'F')
+
+# Single plot
+ggplot(data = boomers, aes(x = year, y = n, color = name)) +
+  geom_line() +
+  labs(title = "Three Most Popular Female Names from the 50's")
+
+# Multiple plots, changing colors of lines, and removed legend
+ggplot(data = boomers, aes(x = year, y = n, color = name)) +
+  geom_line() +
+  labs(title = "Three Most Popular Female Names from the 50's") +
+  facet_wrap(~name, ncol = 1) +
+  theme(legend.position = "none") + # Removed legend
+  scale_color_manual(values = c("red", "darkolivegreen3", "hotpink"))
+
+library(ggthemes)
+
+# Using the previous plot to explore themes
+ggplot(data = boomers, aes(x = year, y = n, color = name)) +
+  geom_line() +
+  labs(title = "Three Most Popular Female Names from the 50's") +
+  facet_wrap(~name, ncol = 1) +
+  theme(legend.position = "none")
+
+ggplot(data = boomers, aes(x = year, y = n, color = name)) +
+  geom_line() +
+  labs(title = "Three Most Popular Female Names from the 50's") +
+  facet_wrap(~name, ncol = 1) +
+  theme(legend.position = "none")
+
+# Find top 5 things ordered by total count
+genx <- babynames %>% 
+  filter(year >= 1965, year <= 1981) %>% 
+  group_by(sex, name) %>% 
+  summarize(total = sum(n)) %>% 
+  slice_max(order_by = total, n = 5)
+
+# Pull takes a column and extracts the values to a vector
+genx_top5_f <- genx %>% filter(sex == "F") %>% pull(name)
+
+df <- babynames %>% 
+  filter(name %in% genx_top5_f)
+
+ggplot(data = df, aes(x = year, y = n, color = name)) +
+  geom_line() +
+  facet_wrap(~name) +
+  theme(legend.position = 'none')
+
+# Gen Z 1997 to 2012 Male Top 5 Names
+genz <- babynames %>% 
+  filter(year >= 1997, year <= 2012) %>% 
+  group_by(sex, name) %>% 
+  summarize(total = sum(n)) %>% 
+  slice_max(order_by = total, n = 5)
+
+genz_top5_m <- genz %>% filter(sex == 'M') %>% pull(name)
+
+z_m_df <- babynames %>% filter(name %in% genz_top5_m) %>% filter(sex == 'M')
+
+ggplot(data = z_m_df, aes(x = year, y = n, color = name)) +
+  geom_line() +
+  facet_wrap(~name) +
+  theme(legend.position = 'none') +
+  labs(title = "Top 5 Male Gen Z Names")
+
+# Gen Z 1997 to 2012 Female Top 5 Names
+genz_top5_f <- genz %>% filter(sex == 'F') %>% pull(name)
+
+z_f_df <- babynames %>% filter(name %in% genz_top5_f) %>% filter(sex == 'F')
+
+ggplot(data = z_f_df, aes(x = year, y = n, color = name)) +
+  geom_line() +
+  facet_wrap(~name) +
+  theme(legend.position = 'none') +
+  labs(title = "Top 5 Female Gen Z Names")
+
+# Both on same plot
+
+z_df <- babynames %>% filter((name %in% genz_top5_f & sex == 'F') | (name %in% genz_top5_m & sex == 'M'))
+
+ggplot(data = z_df, aes(x = year, y = n, fill = sex)) +
+  geom_area() +
+  facet_wrap(~name) +
+  labs(title = "Top 5 Male & Top 5 Female Gen Z Names")
+
+# Same sex and name as me
+me <- babynames %>% 
+  filter(sex == 'M', name == 'Michael')
+
+ggplot(data = me, aes(x = year, y = n)) +
+  geom_area(alpha = .7, fill = 'green', color = 'darkgreen') +
+  labs(title = "Males with the name Michael", x = "Year", y = "Frequency")
+
+
+```

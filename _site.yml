@@ -1,0 +1,11 @@
+name: "Michael"
+output_dir: "."
+navbar:
+  title: "Michael"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "About"
+      href: about.html
+    - text: "Baby Name Data"
+      href: BabyName.html
