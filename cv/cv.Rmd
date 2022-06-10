@@ -1,0 +1,38 @@
+---
+name: Michael
+surname: Komnick
+position: "Student"
+address: "1001 East Lincoln St, Tullahoma, Tennessee"
+phone: +1 931 434 1610
+www: LordOfTimeLords64.github.io
+email: "komnimj0@sewanee.edu"
+twitter: 
+github: LordOfTimeLords64
+linkedin: mkomnick
+date: "`r format(Sys.time(), '%B %Y')`"
+output: 
+  vitae::awesomecv:
+    page_total: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(vitae)
+```
+
+# Some stuff about me
+
+ * I love computers, programming, CAD/CAM, 3D printing, and right to repair
+ * I have my own physical server running Ubuntu Server OS that I use for many things
+ * I won the SkillsUSA Tennessee 2019 Automated Manufacturing Technology competition
+
+# Education
+
+```{r}
+library(tibble)
+tribble(
+  ~ Degree, ~ Year, ~ Institution, ~ Where,
+  "B.S. in Computer Science", "2024", "The University of the South", "Sewanee, Tennessee"
+) %>% 
+  detailed_entries(Degree, Year, Institution, Where)
+```
