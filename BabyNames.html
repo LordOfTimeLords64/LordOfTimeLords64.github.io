@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Michael Komnick" />
+
+<meta name="date" content="2022-06-10" />
+
+<title>Data About Baby Names</title>
+
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Michael</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="BabyName.html">Baby Name Data</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Data About Baby Names</h1>
+<h4 class="author">Michael Komnick</h4>
+<h4 class="date">2022-06-10</h4>
+
+</div>
+
+
+<div id="getting-to-know-babynames" class="section level2">
+<h2>Getting to know <code>babynames</code></h2>
+<p>Here are the names of the columns: <em>year</em>, <em>name</em>,
+<em>n</em> and <em>sex</em> and the first few rows:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">year</th>
+<th align="left">name</th>
+<th align="right">n</th>
+<th align="left">sex</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1880</td>
+<td align="left">Mary</td>
+<td align="right">7065</td>
+<td align="left">F</td>
+</tr>
+<tr class="even">
+<td align="right">1880</td>
+<td align="left">Anna</td>
+<td align="right">2604</td>
+<td align="left">F</td>
+</tr>
+<tr class="odd">
+<td align="right">1880</td>
+<td align="left">Emma</td>
+<td align="right">2003</td>
+<td align="left">F</td>
+</tr>
+<tr class="even">
+<td align="right">1880</td>
+<td align="left">Elizabeth</td>
+<td align="right">1939</td>
+<td align="left">F</td>
+</tr>
+<tr class="odd">
+<td align="right">1880</td>
+<td align="left">Minnie</td>
+<td align="right">1746</td>
+<td align="left">F</td>
+</tr>
+<tr class="even">
+<td align="right">1880</td>
+<td align="left">Margaret</td>
+<td align="right">1578</td>
+<td align="left">F</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="lets-count-and-plot-some-stuff" class="section level2">
+<h2>Let’s count and plot some stuff</h2>
+</div>
+<div id="by-the-numbers" class="section level2">
+<h2>By the numbers</h2>
+<p>Counts of the numbers of males and females born (and registered) in
+1880:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">sex</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">F</td>
+<td align="right">942</td>
+</tr>
+<tr class="even">
+<td align="left">M</td>
+<td align="right">1058</td>
+</tr>
+</tbody>
+</table>
+<p>Counts the number of names for each sex by year:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">sex</th>
+<th align="right">year</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">F</td>
+<td align="right">1880</td>
+<td align="right">942</td>
+</tr>
+<tr class="even">
+<td align="left">F</td>
+<td align="right">1881</td>
+<td align="right">938</td>
+</tr>
+<tr class="odd">
+<td align="left">F</td>
+<td align="right">1882</td>
+<td align="right">1028</td>
+</tr>
+<tr class="even">
+<td align="left">F</td>
+<td align="right">1883</td>
+<td align="right">1054</td>
+</tr>
+<tr class="odd">
+<td align="left">F</td>
+<td align="right">1884</td>
+<td align="right">1172</td>
+</tr>
+<tr class="even">
+<td align="left">F</td>
+<td align="right">1885</td>
+<td align="right">1197</td>
+</tr>
+</tbody>
+</table>
+<div id="plots" class="section level3">
+<h3>Plots:</h3>
+<div class="figure">
+<img src="BabyNames_files/figure-html/namesOverTime-1.png" alt="A caption" width="75%" />
+<p class="caption">
+A caption
+</p>
+</div>
+</div>
+</div>
+<div id="the-rest-of-our-script" class="section level2">
+<h2>The rest of our script:</h2>
+<p><img src="BabyNames_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre><code>## # A tibble: 6 × 4
+##    year name          n sex  
+##   &lt;dbl&gt; &lt;chr&gt;     &lt;int&gt; &lt;chr&gt;
+## 1  1880 Mary       7065 F    
+## 2  1880 Anna       2604 F    
+## 3  1880 Emma       2003 F    
+## 4  1880 Elizabeth  1939 F    
+## 5  1880 Minnie     1746 F    
+## 6  1880 Margaret   1578 F</code></pre>
+<pre><code>## # A tibble: 6 × 3
+## # Groups:   year [3]
+##    year sex   Babies
+##   &lt;dbl&gt; &lt;chr&gt;  &lt;int&gt;
+## 1  1880 F      90993
+## 2  1880 M     110491
+## 3  1881 F      91953
+## 4  1881 M     100743
+## 5  1882 F     107847
+## 6  1882 M     113686</code></pre>
+<p><img src="BabyNames_files/figure-html/unnamed-chunk-5-2.png" width="672" /><img src="BabyNames_files/figure-html/unnamed-chunk-5-3.png" width="672" /></p>
+<pre><code>## # A tibble: 138 × 2
+##     year Total_Babies_Per_Year
+##    &lt;dbl&gt;                 &lt;int&gt;
+##  1  1880                201484
+##  2  1881                192696
+##  3  1882                221533
+##  4  1883                216946
+##  5  1884                243462
+##  6  1885                240854
+##  7  1886                255317
+##  8  1887                247394
+##  9  1888                299473
+## 10  1889                288946
+## # … with 128 more rows</code></pre>
+<pre><code>## # A tibble: 1 × 1
+##   Total_Babies_Since_1880
+##                     &lt;int&gt;
+## 1               348120517</code></pre>
+<p><img src="BabyNames_files/figure-html/unnamed-chunk-5-4.png" width="672" /></p>
+<pre><code>## # A tibble: 30,563 × 4
+##     year name            n sex  
+##    &lt;dbl&gt; &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;
+##  1  2002 Jacob       30568 M    
+##  2  2002 Michael     28246 M    
+##  3  2002 Joshua      25986 M    
+##  4  2002 Matthew     25151 M    
+##  5  2002 Emily       24463 F    
+##  6  2002 Ethan       22108 M    
+##  7  2002 Andrew      22017 M    
+##  8  2002 Joseph      21891 M    
+##  9  2002 Madison     21773 F    
+## 10  2002 Christopher 21681 M    
+## # … with 30,553 more rows</code></pre>
+<pre><code>## # A tibble: 18,606 × 3
+## # Groups:   sex [2]
+##    sex   name      total
+##    &lt;chr&gt; &lt;chr&gt;     &lt;int&gt;
+##  1 M     Michael  771991
+##  2 M     James    757250
+##  3 M     Robert   746569
+##  4 M     John     718240
+##  5 M     David    708922
+##  6 F     Mary     560076
+##  7 M     William  530335
+##  8 M     Richard  484237
+##  9 F     Linda    483880
+## 10 F     Patricia 411678
+## # … with 18,596 more rows</code></pre>
+<p><img src="BabyNames_files/figure-html/unnamed-chunk-5-5.png" width="672" /><img src="BabyNames_files/figure-html/unnamed-chunk-5-6.png" width="672" /><img src="BabyNames_files/figure-html/unnamed-chunk-5-7.png" width="672" /><img src="BabyNames_files/figure-html/unnamed-chunk-5-8.png" width="672" /><img src="BabyNames_files/figure-html/unnamed-chunk-5-9.png" width="672" /><img src="BabyNames_files/figure-html/unnamed-chunk-5-10.png" width="672" /><img src="BabyNames_files/figure-html/unnamed-chunk-5-11.png" width="672" /><img src="BabyNames_files/figure-html/unnamed-chunk-5-12.png" width="672" /><img src="BabyNames_files/figure-html/unnamed-chunk-5-13.png" width="672" /></p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
