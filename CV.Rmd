@@ -12,7 +12,7 @@ output:
 
 # Aside
 
-![MichaelKomnick](me.png){width="80%"}
+![MichaelKomnick](./me.png){width="80%"}
 
 ## Contact Info {#contact}
 
