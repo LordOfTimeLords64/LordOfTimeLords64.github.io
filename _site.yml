@@ -8,4 +8,4 @@ navbar:
     - text: "About"
       href: about.html
     - text: "Baby Name Data"
-      href: BabyName.html
+      href: BabyNames.html
