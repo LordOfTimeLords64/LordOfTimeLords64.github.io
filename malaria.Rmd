@@ -1,0 +1,49 @@
+---
+title: "Malaria"
+author: "Michael Komnick"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
+library(dplyr)
+library(ggplot2)
+library(readr)
+library(lubridate)
+library(tidytext)
+library(gsheet)
+library(wordcloud2)
+library(sentimentr)
+
+pms <- read_csv('https://github.com/databrew/intro-to-data-science/blob/main/data/pms.csv?raw=true')
+```
+
+## Introduciton
+
+I would like to discover if there is a relationship between age group and positive malaria cases.
+
+## Methods
+
+The way we can find this out is by finding the total number of patients for each age group and also the number of patients diagnosed with malaria for each age group. Then we can divide the number of positive malaria cases by the number of patients for each age group to find the percent of malaria cases for each.
+
+## Results
+
+```{r message=FALSE}
+rateByAge <- pms %>% 
+  group_by(age, malaria_diagnosis) %>% 
+  summarise(positive = sum(ifelse(malaria_diagnosis == 'Malaria', 1, 0)),
+            negative = sum(ifelse(malaria_diagnosis != 'Malaria', 1, 0))) %>%
+  ungroup(malaria_diagnosis) %>% 
+  summarise(rate = sum(positive)/(sum(positive)+sum(negative)) * 100) %>% 
+  mutate(age = factor(age, levels = c("0-<5", "5-15", ">15")))
+
+ggplot(data = rateByAge, aes(x = age, y = rate)) +
+  geom_col() +
+  labs(title = "Malaria Rates", subtitle = "By Age Group", x = "Age Group", y = "Malaria Rate")
+```
+
+As you can see, the malaria rates for children are much higher than those for adults.
