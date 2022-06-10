@@ -9,3 +9,5 @@ navbar:
       href: about.html
     - text: "Baby Name Data"
       href: BabyNames.html
+    - text: "Malaria Data"
+      href: malaria.html
