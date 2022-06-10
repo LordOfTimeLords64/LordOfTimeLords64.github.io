@@ -2,4 +2,4 @@
 title: "About This Website"
 ---
 
-This is my about site!!!!
+This site is used to show work I've done in R and my resume, which was done in R! Need a computer science major on your team? Check out my resume! Thanks for visiting my site!

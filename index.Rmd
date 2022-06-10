@@ -1,5 +1,7 @@
 ---
-title: "My Website"
+title: "Michael Komnick"
 ---
 
-This is my index page!!!
+## Welcome to the homepage of Michael Komnick
+
+I'm a full time student at the University of the South studying computer science. I enjoy using my Dell T110 with Ubuntu Server to host websites, video game servers, media streaming services, and file sharing services for me and my friends. I also enjoy building and repairing computers and other electronics.

@@ -7,6 +7,8 @@ navbar:
       href: index.html
     - text: "About"
       href: about.html
+    - text: "Resume"
+      href: CV.html
     - text: "Baby Name Data"
       href: BabyNames.html
     - text: "Malaria Data"

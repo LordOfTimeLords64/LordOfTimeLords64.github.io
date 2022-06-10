@@ -1,0 +1,75 @@
+---
+title: "Michael Komnick's Resume"
+author: Michael Komnick
+date: "`r Sys.Date()`"
+output:
+  pagedown::html_resume:
+    # set it to true for a self-contained HTML page but it'll take longer to render
+    self_contained: true
+# uncomment this line to produce HTML and PDF in RStudio:
+#knit: pagedown::chrome_print
+---
+
+# Aside
+
+![MichaelKomnick](me.png){width="80%"}
+
+## Contact Info {#contact}
+
+-   <i class="fa fa-envelope"></i> [komnimj0@sewanee.edu](mailto:komnimj0@sewanee.edu){.email}
+-   <i class="fa fa-github"></i> [github.com/LordOfTimeLordss64](https://github.com/LordOfTimeLords64)
+-   <i class="fa fa-phone"></i> +1 931-434-1610
+
+-   For more information, please contact me via email.
+
+## Skills {#skills}
+
+-   Experienced in Ubuntu Server, MySQL, Ubuntu, Windows, MacOS, AutoCAD, Inventor, Fusion360.
+
+-   Skilled in R, Java, PHP, Javascript, Jquerry, C, HTML, & CSS
+
+## Disclaimer {#disclaimer}
+
+
+Last updated on `r Sys.Date()`.
+
+# Main
+
+## Michael Komnick {#title}
+
+### Currently a full time student at The University of The South
+
+## Education {data-icon="graduation-cap" data-concise="true"}
+
+### Tullahom High School
+
+Graduated in the top 10% with honors in Physics and Technical Drafting
+
+Tullahoma, Tennessee
+
+2020
+
+### The University of The South
+
+B.S. in Computer Science
+
+GPA: 3.83
+
+Sewanee, Tennessee
+
+2024
+
+## Work Experience {data-icon="suitcase"}
+
+### Data Scientist, intern
+
+Sewanee DataLab
+
+Sewanee, Tennessee
+
+2022
+
+::: concise
+-   Used R to analyze, display, and interact with data.
+-   Used RMarkdown and Github to post data to the internet.
+:::
